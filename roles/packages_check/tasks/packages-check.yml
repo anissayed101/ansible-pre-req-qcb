@@ -1,0 +1,27 @@
+---
+- name: Packages & Parcels Check
+  hosts: all
+  gather_facts: yes
+  vars_files:
+    - vars/packages.yml
+  tasks:
+    - name: Install required packages
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ required_packages }}"
+
+    - name: Verify installation
+      command: rpm -qi {{ item }}
+      register: package_check
+      with_items: "{{ required_packages }}"
+      ignore_errors: yes
+
+    - name: Write package check results to CSV
+      lineinfile:
+        path: /tmp/ansible_pre_req_check/packages_check.csv
+        line: "{{ ansible_hostname }} {{ item.item }} {{ 'INSTALLED' if 'is not installed' not in item.stdout else 'NOT INSTALLED' }} {{ item.stdout | regex_search('Version[ ]*:[ ]*(\S+)', '\1') | default('N/A') }}"
+        create: yes
+      with_items: "{{ package_check.results }}"
+      delegate_to: localhost
+      run_once: true
