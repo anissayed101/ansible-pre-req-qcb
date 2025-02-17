@@ -1,0 +1,52 @@
+---
+    - name: Include package variables
+      include_vars: "{{ role_path }}/vars/main.yml"
+
+    - name: Ensure output directory exists
+      file:
+        path: /tmp/ansible_pre_req_check
+        state: directory
+
+    - name: Check SELinux status
+      command: getenforce
+      register: selinux_status
+
+    - name: Check NTP sync status
+      command: timedatectl show --property=NTP
+      register: ntp_status
+
+    - name: Check THP (Transparent Huge Pages) status
+      command: cat /sys/kernel/mm/transparent_hugepage/enabled
+      register: thp_status
+
+    - name: Check VM swappiness
+      command: sysctl vm.swappiness
+      register: swappiness_status
+
+    - name: Check disk mount options
+      command: mount   grep noatime
+      register: disk_mount_status
+      ignore_errors: yes
+
+    - name: Check disk filesystem type
+      command: lsblk -f
+      register: disk_fs_status
+
+    - name: Store results in variable
+      set_fact:
+        os_services_results: |
+          {{ ansible_fqdn }}|{{ ansible_default_ipv4.address }}|SELinux|{{ 'CONFIGURED_CORRECTLY' if selinux_status.stdout == 'Disabled' else 'NOT_CONFIGURED_CORRECTLY' }}|SELinux_should_be_disabled
+          {{ ansible_fqdn }}|{{ ansible_default_ipv4.address }}|NTP|{{ 'CONFIGURED_CORRECTLY' if 'NTP=yes' in ntp_status.stdout else 'NOT_CONFIGURED_CORRECTLY' }}|NTP_should_be_enabled
+          {{ ansible_fqdn }}|{{ ansible_default_ipv4.address }}|THP|{{ 'CONFIGURED_CORRECTLY' if '[never]' in thp_status.stdout else 'NOT_CONFIGURED_CORRECTLY' }}|THP_should_be_disabled
+          {{ ansible_fqdn }}|{{ ansible_default_ipv4.address }}|VM_Swappiness|{{ 'CONFIGURED_CORRECTLY' if 'vm.swappiness = 1' in swappiness_status.stdout else 'NOT_CONFIGURED_CORRECTLY' }}|Swappiness_should_be_1
+          {{ ansible_fqdn }}|{{ ansible_default_ipv4.address }}|Disk_Mount|{{ 'CONFIGURED_CORRECTLY' if disk_mount_status.rc == 0 else 'NOT_CONFIGURED_CORRECTLY' }}|Data_disks_should_use_noatime
+          {{ ansible_fqdn }}|{{ ansible_default_ipv4.address }}|Disk_Filesystem|{{ 'CONFIGURED_CORRECTLY' if 'ext4' in disk_fs_status.stdout or 'xfs' in disk_fs_status.stdout else 'NOT_CONFIGURED_CORRECTLY' }}|Disks_should_be_EXT4_or_XFS
+
+    - name: Write OS services check results to CSV
+      lineinfile:
+        path: /tmp/ansible_pre_req_check/os_services_check.csv
+        line: "{{ item }}"
+        create: yes
+      with_items: "{{ os_services_results.split('\n') }}"
+      delegate_to: localhost
+      run_once: false
