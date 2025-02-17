@@ -1,3 +1,32 @@
 ---
-- include_tasks: packages-check.yml
+    - name: Include package variables
+      include_vars: "{{ role_path }}/vars/main.yml"
+
+    - name: Verify installation
+      command: rpm -qi {{ item }}
+      register: package_check
+      with_items: "{{ required_packages }}"
+      ignore_errors: yes
+
+    - name: Ensure CSV directory exists
+      file:
+        path: /tmp/ansible_pre_req_check
+        state: directory
+
+    - name: Initialize CSV file with header (only on first run)
+      lineinfile:
+        path: /tmp/ansible_pre_req_check/packages_check.csv
+        line: "FQDN Server_IP Package_Name Installation_Status Version"
+        create: yes
+        state: present
+      run_once: true
+
+    - name: Write package check results to CSV
+      lineinfile:
+        path: /tmp/ansible_pre_req_check/packages_check.csv
+        line: "{{ ansible_fqdn }} {{ ansible_default_ipv4.address }} {{ item.item }} {{ 'INSTALLED' if 'is not installed' not in item.stdout else 'NOT_INSTALLED' }} {{ item.stdout | regex_search('Version[ ]*:[ ]*(\\S+)', '\\1') | default('N/A') }}"
+        create: yes
+      with_items: "{{ package_check.results }}"
+      delegate_to: localhost
+      run_once: false
 
