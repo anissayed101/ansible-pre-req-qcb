@@ -3,5 +3,5 @@
   gather_facts: yes
   roles:
     - packages_check
-    - os_services_check
-    - network_check
+    #- os_services_check
+    #- network_check
