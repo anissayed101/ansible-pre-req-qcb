@@ -39,15 +39,15 @@
       set_fact:
         filtered_disks: "{{ mounted_disks.stdout_lines | select('search', '\\S+\\s+\\S+\\s+\\S+') | list }}"
 
-    - name: Debug Filtered Disks Output
-      debug:
-        var: filtered_disks
-
     - name: Check noatime configuration for each disk
       command: "findmnt -no OPTIONS --target {{ item.split()[1] }}"
       register: noatime_check
       loop: "{{ filtered_disks }}"
       ignore_errors: yes
+
+    - name: Debug Filtered Disks Output
+      debug:
+        var: filtered_disks
 
     - name: Filter noatime setting from results
       set_fact:
@@ -67,10 +67,10 @@
     
     - name: Pair disks with noatime results and storage size
       set_fact:
-        disk_noatime_results: "{{ disk_noatime_results + [ ansible_fqdn + ' ' + ansible_default_ipv4.address + ' ' + item.0.split()[0] + ' ' + item.0.split()[2] + ' ' + ('CONFIGURED_CORRECTLY' if item.1 is defined and 'noatime' in item.1.stdout else 'NOT_CONFIGURED_CORRECTLY') + ' Data_disks_should_use_noatime' ] }}"
+        disk_noatime_results: "{{ disk_noatime_results + [ ansible_fqdn + ' ' + ansible_default_ipv4.address + ' ' + item.0.split()[0] + ' ' + ('CONFIGURED_CORRECTLY' if item.1 is defined and 'noatime' in item.1.stdout else 'NOT_CONFIGURED_CORRECTLY') + ' Data_disks_should_use_noatime(Size_' + item.0.split()[2] + ')' ] }}"
       loop: "{{ filtered_disks | zip(noatime_check.results | default([])) | list }}"
       when: "item[0].split() | length > 2 and item[1] is defined"
-
+ 
     - name: Debug disk_noatime_results after pairing
       debug:
         var: disk_noatime_results

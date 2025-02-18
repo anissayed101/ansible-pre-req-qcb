@@ -1,0 +1,18 @@
+Hostname Server_IP Service Configuration_Status Comment
+ip-172-31-25-226.eu-north-1.compute.internal 172.31.25.226 SELinux NOT_CONFIGURED_CORRECTLY SELinux_should_be_disabled
+ip-172-31-31-151.eu-north-1.compute.internal 172.31.31.151 SELinux NOT_CONFIGURED_CORRECTLY SELinux_should_be_disabled
+ip-172-31-31-151.eu-north-1.compute.internal 172.31.31.151 NTP CONFIGURED_CORRECTLY NTP_should_be_enabled
+ip-172-31-25-226.eu-north-1.compute.internal 172.31.25.226 NTP CONFIGURED_CORRECTLY NTP_should_be_enabled
+ip-172-31-25-226.eu-north-1.compute.internal 172.31.25.226 THP NOT_CONFIGURED_CORRECTLY THP_should_be_disabled
+ip-172-31-31-151.eu-north-1.compute.internal 172.31.31.151 THP NOT_CONFIGURED_CORRECTLY THP_should_be_disabled
+ip-172-31-25-226.eu-north-1.compute.internal 172.31.25.226 VM_Swappiness NOT_CONFIGURED_CORRECTLY Swappiness_should_be_1
+ip-172-31-31-151.eu-north-1.compute.internal 172.31.31.151 VM_Swappiness NOT_CONFIGURED_CORRECTLY Swappiness_should_be_1
+ip-172-31-25-226.eu-north-1.compute.internal 172.31.25.226 Memory 904Mi Total_Memory_is_904Mi
+ip-172-31-31-151.eu-north-1.compute.internal 172.31.31.151 Memory 904Mi Total_Memory_is_904Mi
+ip-172-31-25-226.eu-north-1.compute.internal 172.31.25.226 CPU 2 Total_CPU_Cores_is_2
+ip-172-31-31-151.eu-north-1.compute.internal 172.31.31.151 CPU 2 Total_CPU_Cores_is_2
+ip-172-31-25-226.eu-north-1.compute.internal 172.31.25.226 nvme0n1p1 CONFIGURED_CORRECTLY Data_disks_should_use_noatime(Size_30G)
+ip-172-31-31-151.eu-north-1.compute.internal 172.31.31.151 nvme0n1p1 CONFIGURED_CORRECTLY Data_disks_should_use_noatime(Size_30G)
+ip-172-31-25-226.eu-north-1.compute.internal 172.31.25.226 nvme0n1p128 CONFIGURED_CORRECTLY Data_disks_should_use_noatime(Size_10M)
+ip-172-31-31-151.eu-north-1.compute.internal 172.31.31.151 nvme0n1p128 CONFIGURED_CORRECTLY Data_disks_should_use_noatime(Size_10M)
+

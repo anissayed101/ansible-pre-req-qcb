@@ -2,6 +2,6 @@
   hosts: all
   gather_facts: yes
   roles:
-    #- packages_check
+    - packages_check
     - os_services_check
     #- network_check
