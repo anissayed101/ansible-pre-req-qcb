@@ -1,0 +1,101 @@
+---
+    - name: Include package variables
+      include_vars: "{{ role_path }}/vars/main.yml"
+    
+    - name: Check if DNS is configured
+      command: cat /etc/resolv.conf
+      register: dns_config
+
+    - name: Validate forward and reverse DNS resolution
+      command: "nslookup {{ ansible_fqdn }}"
+      register: forward_dns_check
+
+    - name: Validate reverse DNS resolution
+      command: "nslookup {{ ansible_default_ipv4.address }}"
+      register: reverse_dns_check
+
+    - name: Check /etc/hosts file entries
+      command: cat /etc/hosts
+      register: etc_hosts_check
+
+    - name: Check if IPv6 is disabled
+      command: sysctl net.ipv6.conf.all.disable_ipv6
+      register: ipv6_status
+
+    - name: Verify static IP configuration
+      command: ip a show dev {{ ansible_default_ipv4.interface }}
+      register: static_ip_check
+
+    - name: Check if hostname is FQDN
+      command: hostname -f
+      register: fqdn_check
+
+    - name: Verify NIC configuration
+      command: ethtool {{ ansible_default_ipv4.interface }}
+      register: nic_check
+
+    - name: Check NIC firmware and drivers
+      command: ethtool -i {{ ansible_default_ipv4.interface }}
+      register: nic_firmware_check
+    
+    - name: Test connectivity to AD server
+      command: ping -c 3 -W 5 {{ ad_server }}
+      register: ad_reachability
+      ignore_errors: yes
+
+    - name: Evaluate AD reachability
+      set_fact:
+        ad_status: "{{ 'REACHABLE' if ad_reachability.rc == 0 else 'NOT_REACHABLE' }}"
+
+    - name: Test connectivity to DB server
+      command: ping -c 3 -W 5 {{ db_server }}
+      register: db_reachability
+      ignore_errors: yes
+
+    - name: Evaluate DB reachability
+      set_fact:
+        db_status: "{{ 'REACHABLE' if db_reachability.rc == 0 else 'NOT_REACHABLE' }}"
+
+    - name: Test connectivity to NTP server
+      command: ping -c 3 -W 5 {{ ntp_server }}
+      register: ntp_reachability
+      ignore_errors: yes
+
+    - name: Evaluate NTP reachability
+      set_fact:
+        ntp_status: "{{ 'REACHABLE' if ntp_reachability.rc == 0 else 'NOT_REACHABLE' }}"
+
+
+    - name: Store network check results
+      set_fact:
+        network_check_results: |
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} DNS {{ 'CONFIGURED_CORRECTLY' if dns_config.stdout else 'NOT_CONFIGURED_CORRECTLY' }} DNS_is_configured
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} Forward_DNS {{ 'CONFIGURED_CORRECTLY' if 'Name:' in forward_dns_check.stdout else 'NOT_CONFIGURED_CORRECTLY' }} Forward_DNS_is_correct
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} Reverse_DNS {{ 'CONFIGURED_CORRECTLY' if 'Name:' in reverse_dns_check.stdout else 'NOT_CONFIGURED_CORRECTLY' }} Reverse_DNS_is_correct
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} IPv6 {{ 'CONFIGURED_CORRECTLY' if '1' in ipv6_status.stdout else 'NOT_CONFIGURED_CORRECTLY' }} IPv6_is_disabled
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} Static_IP {{ 'CONFIGURED_CORRECTLY' if static_ip_check.stdout else 'NOT_CONFIGURED_CORRECTLY' }} Static_IP_is_set
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} FQDN {{ 'CONFIGURED_CORRECTLY' if fqdn_check.stdout == ansible_fqdn else 'NOT_CONFIGURED_CORRECTLY' }} Hostname_is_FQDN
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} NIC {{ 'CONFIGURED_CORRECTLY' if nic_check.stdout else 'NOT_CONFIGURED_CORRECTLY' }} NIC_configuration_verified
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} NIC_Firmware {{ 'CONFIGURED_CORRECTLY' if nic_firmware_check.stdout else 'NOT_CONFIGURED_CORRECTLY' }} NIC_firmware_checked
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} AD_Reachability {{ ad_status }} AD_server_{{ ad_server }}
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} DB_Reachability {{ db_status }} DB_server_{{ db_server }}
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} NTP_Reachability {{ ntp_status }} NTP_server_{{ ntp_server }}
+
+    - name: Remove existing output file if it exists
+      file:
+        path: /tmp/ansible_pre_req_check/network_connectivity_check.csv
+        state: absent
+
+    - name: Create new output file and add headers
+      copy:
+        dest: /tmp/ansible_pre_req_check/network_connectivity_check.csv
+        content: "Hostname Server_IP Service Configuration_Status Comment\n"
+
+    - name: Write network connectivity check results to CSV
+      lineinfile:
+        path: /tmp/ansible_pre_req_check/network_connectivity_check.csv
+        line: "{{ item }}"
+        create: yes
+      loop: "{{ network_check_results.split('\n') }}"
+      delegate_to: localhost
+      run_once: false
