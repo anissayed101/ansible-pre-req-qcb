@@ -23,24 +23,89 @@
       command: sysctl vm.swappiness
       register: swappiness_status
 
-    - name: Check disk mount options
-      command: mount   grep noatime
-      register: disk_mount_status
+    - name: Check total memory in GB
+      command: free -h
+      register: memory_status
+
+    - name: Extract memory value safely
+      set_fact:
+        memory_size: "{{ memory_status.stdout_lines[1].split()[1] if memory_status.stdout_lines | length > 1 else 'UNKNOWN' }}"
+
+    - name: Get list of mounted disks with storage size
+      command: lsblk -nr -o NAME,MOUNTPOINT,SIZE
+      register: mounted_disks
+
+    - name: Filter mounted disks only
+      set_fact:
+        filtered_disks: "{{ mounted_disks.stdout_lines | select('search', '\\S+\\s+\\S+\\s+\\S+') | list }}"
+
+    - name: Debug Filtered Disks Output
+      debug:
+        var: filtered_disks
+
+    - name: Check noatime configuration for each disk
+      command: "findmnt -no OPTIONS --target {{ item.split()[1] }}"
+      register: noatime_check
+      loop: "{{ filtered_disks }}"
       ignore_errors: yes
 
-    - name: Check disk filesystem type
-      command: lsblk -f
-      register: disk_fs_status
+    - name: Filter noatime setting from results
+      set_fact:
+        filtered_noatime_results: "{{ noatime_check.results | map(attribute='stdout_lines') | map('last') | list }}"
+
+    - name: Debug Noatime Check Output
+      debug:
+        var: filtered_noatime_results.results
+
+    - name: Ensure disk_noatime_results is initialized
+      set_fact:
+        disk_noatime_results: []
+    
+    - name: Debug disk_noatime_results before pairing
+      debug:
+        var: disk_noatime_results
+    
+    - name: Pair disks with noatime results and storage size
+      set_fact:
+        disk_noatime_results: "{{ disk_noatime_results + [ ansible_fqdn + ' ' + ansible_default_ipv4.address + ' ' + item.0.split()[0] + ' ' + item.0.split()[2] + ' ' + ('CONFIGURED_CORRECTLY' if item.1 is defined and 'noatime' in item.1.stdout else 'NOT_CONFIGURED_CORRECTLY') + ' Data_disks_should_use_noatime' ] }}"
+      loop: "{{ filtered_disks | zip(noatime_check.results | default([])) | list }}"
+      when: "item[0].split() | length > 2 and item[1] is defined"
+
+    - name: Debug disk_noatime_results after pairing
+      debug:
+        var: disk_noatime_results
+  
+    - name: Debug Pairing of Disks with Noatime Results
+      debug:
+        msg: "Disk: {{ item[0] }} | Noatime Check: {{ item[1] | default('None') }}"
+      loop: "{{ filtered_disks | zip(noatime_check.results | default([])) | list }}"
+
+    - name: Check total CPU cores
+      command: nproc
+      register: cpu_status
 
     - name: Store results in variable
       set_fact:
         os_services_results: |
-          {{ ansible_fqdn }}|{{ ansible_default_ipv4.address }}|SELinux|{{ 'CONFIGURED_CORRECTLY' if selinux_status.stdout == 'Disabled' else 'NOT_CONFIGURED_CORRECTLY' }}|SELinux_should_be_disabled
-          {{ ansible_fqdn }}|{{ ansible_default_ipv4.address }}|NTP|{{ 'CONFIGURED_CORRECTLY' if 'NTP=yes' in ntp_status.stdout else 'NOT_CONFIGURED_CORRECTLY' }}|NTP_should_be_enabled
-          {{ ansible_fqdn }}|{{ ansible_default_ipv4.address }}|THP|{{ 'CONFIGURED_CORRECTLY' if '[never]' in thp_status.stdout else 'NOT_CONFIGURED_CORRECTLY' }}|THP_should_be_disabled
-          {{ ansible_fqdn }}|{{ ansible_default_ipv4.address }}|VM_Swappiness|{{ 'CONFIGURED_CORRECTLY' if 'vm.swappiness = 1' in swappiness_status.stdout else 'NOT_CONFIGURED_CORRECTLY' }}|Swappiness_should_be_1
-          {{ ansible_fqdn }}|{{ ansible_default_ipv4.address }}|Disk_Mount|{{ 'CONFIGURED_CORRECTLY' if disk_mount_status.rc == 0 else 'NOT_CONFIGURED_CORRECTLY' }}|Data_disks_should_use_noatime
-          {{ ansible_fqdn }}|{{ ansible_default_ipv4.address }}|Disk_Filesystem|{{ 'CONFIGURED_CORRECTLY' if 'ext4' in disk_fs_status.stdout or 'xfs' in disk_fs_status.stdout else 'NOT_CONFIGURED_CORRECTLY' }}|Disks_should_be_EXT4_or_XFS
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} SELinux {{ 'CONFIGURED_CORRECTLY' if selinux_status.stdout == 'Disabled' else 'NOT_CONFIGURED_CORRECTLY' }} SELinux_should_be_disabled
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} NTP {{ 'CONFIGURED_CORRECTLY' if 'NTP=yes' in ntp_status.stdout else 'NOT_CONFIGURED_CORRECTLY' }} NTP_should_be_enabled
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} THP {{ 'CONFIGURED_CORRECTLY' if '[never]' in thp_status.stdout else 'NOT_CONFIGURED_CORRECTLY' }} THP_should_be_disabled
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} VM_Swappiness {{ 'CONFIGURED_CORRECTLY' if 'vm.swappiness = 1' in swappiness_status.stdout else 'NOT_CONFIGURED_CORRECTLY' }} Swappiness_should_be_1
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} Memory {{ memory_size }} Total_Memory_is_{{ memory_size }}
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} CPU {{ cpu_status.stdout }} Total_CPU_Cores_is_{{ cpu_status.stdout }}
+          {% for item in disk_noatime_results %}
+          {{ item }}
+          {% endfor %}
+
+    - name: Remove existing output file if it exists
+      file:
+        path: /tmp/ansible_pre_req_check/os_services_check.csv
+        state: absent
+
+    - name: Create new output file and add headers
+      copy:
+        dest: /tmp/ansible_pre_req_check/os_services_check.csv
+        content: "Hostname Server_IP Service Configuration_Status Comment\n"
 
     - name: Write OS services check results to CSV
       lineinfile:
@@ -50,3 +115,10 @@
       with_items: "{{ os_services_results.split('\n') }}"
       delegate_to: localhost
       run_once: false
+
+    - name: Ensure output file exists before replacing '|' with spaces
+      command: touch /tmp/ansible_pre_req_check/os_services_check.csv
+
+    - name: Replace '|' with spaces in output file
+      command: sed -i 's/|/ /g' /tmp/ansible_pre_req_check/os_services_check.csv
+
