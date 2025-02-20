@@ -1,6 +1,8 @@
 ---
     - name: Include package variables
       include_vars: "{{ role_path }}/vars/main.yml"
+      include_vars: "{{ role_path }}/vars/network_secrets.yml"
+
     
     - name: Check if DNS is configured
       command: cat /etc/resolv.conf
@@ -37,7 +39,19 @@
     - name: Check NIC firmware and drivers
       command: ethtool -i {{ ansible_default_ipv4.interface }}
       register: nic_firmware_check
-    
+   
+    - name: Ensure network_check_results is initialized
+      set_fact:
+        network_check_results: []
+
+    - name: Check if the server is using IPv4
+      command: ip -4 addr show
+      register: ipv4_check
+
+    - name: Store IPv4 check results
+      set_fact:
+        network_check_results: "{{ network_check_results + [ ansible_fqdn + ' ' + ansible_default_ipv4.address + ' IPv4 ' + ('CONFIGURED_CORRECTLY' if ipv4_check.stdout | length > 0 else 'NOT_CONFIGURED_CORRECTLY') + ' IPv4_should_be_used' ] }}"
+
     - name: Test connectivity to AD server
       command: ping -c 3 -W 5 {{ ad_server }}
       register: ad_reachability
@@ -66,6 +80,36 @@
         ntp_status: "{{ 'REACHABLE' if ntp_reachability.rc == 0 else 'NOT_REACHABLE' }}"
 
 
+    - name: Test AD login using LDAP Bind
+      command: >
+        ldapwhoami -x -H ldap://{{ ad_server }}:{{ ad_port }} -D "{{ ad_bind_user }}" -w "{{ ad_bind_password }}"
+      register: ad_login_test
+      ignore_errors: yes
+
+    - name: Store AD login test result
+      set_fact:
+        ad_auth_status: "{{ 'AUTHENTICATION_SUCCESS' if ad_login_test.rc == 0 else 'AUTHENTICATION_FAILED' }}"
+     
+    - name: Test Oracle DB login
+      shell: |
+        echo "SELECT 1 FROM dual;" | sqlplus -s "{{ db_user }}/{{ db_password }}@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={{ db_server }})(PORT={{ db_port }})))(CONNECT_DATA=(SERVICE_NAME={{ db_service }})))"
+      register: db_login_test
+      ignore_errors: yes
+
+    - name: Store DB login test result
+      set_fact:
+        db_auth_status: "{{ 'AUTHENTICATION_SUCCESS' if db_login_test.rc == 0 else 'AUTHENTICATION_FAILED' }}"
+
+    - name: Test NTP server authentication (if applicable)
+      command: ntpq -p {{ ntp_server }}
+      register: ntp_login_test
+      ignore_errors: yes
+
+    - name: Store NTP authentication test result
+      set_fact:
+        ntp_auth_status: "{{ 'AUTHENTICATION_SUCCESS' if ntp_login_test.rc == 0 else 'AUTHENTICATION_FAILED' }}"
+
+
     - name: Store network check results
       set_fact:
         network_check_results: |
@@ -77,9 +121,19 @@
           {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} FQDN {{ 'CONFIGURED_CORRECTLY' if fqdn_check.stdout == ansible_fqdn else 'NOT_CONFIGURED_CORRECTLY' }} Hostname_is_FQDN
           {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} NIC {{ 'CONFIGURED_CORRECTLY' if nic_check.stdout else 'NOT_CONFIGURED_CORRECTLY' }} NIC_configuration_verified
           {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} NIC_Firmware {{ 'CONFIGURED_CORRECTLY' if nic_firmware_check.stdout else 'NOT_CONFIGURED_CORRECTLY' }} NIC_firmware_checked
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} IPv4 {{ 'CONFIGURED_CORRECTLY' if ipv4_check.stdout else 'NOT_CONFIGURED_CORRECTLY' }} IPv4_should_be_used
           {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} AD_Reachability {{ ad_status }} AD_server_{{ ad_server }}
           {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} DB_Reachability {{ db_status }} DB_server_{{ db_server }}
           {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} NTP_Reachability {{ ntp_status }} NTP_server_{{ ntp_server }}
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} AD_Authentication {{ ad_auth_status }} AD_server_{{ ad_server }}
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} DB_Authentication {{ db_auth_status }} DB_server_{{ db_server }}
+          {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} NTP_Authentication {{ ntp_auth_status }} NTP_server_{{ ntp_server }}
+    
+    - name: Ensure output directory exists
+      file:
+        path: /tmp/ansible_pre_req_check
+        state: directory
+        mode: '0755'
 
     - name: Remove existing output file if it exists
       file:

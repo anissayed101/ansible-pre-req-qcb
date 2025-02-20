@@ -1,0 +1,75 @@
+- name: Load port variables
+  include_vars:
+    file: "{{ role_path }}/vars/ports.json"
+    name: port_data
+
+- name: Debug Loaded Ports Data
+  debug:
+    var: port_data
+
+- name: Ensure output directory exists
+  file:
+    path: /tmp/ansible_pre_req_check
+    state: directory
+
+- name: Remove existing output file if it exists
+  file:
+    path: /tmp/ansible_pre_req_check/ports_check.csv
+    state: absent
+
+- name: Create new output file and add headers
+  copy:
+    dest: /tmp/ansible_pre_req_check/ports_check.csv
+    content: "source_hostname,destination_hostname,port,connection_status,service,daemon,comment,test_type\n"
+
+- name: Initialize port check results
+  set_fact:
+    port_check_results: []
+
+- name: Perform port connectivity check
+  block:
+    - name: Loop through hosts and check ports
+      shell: "nc -zvw3 {{ test_case.0 }} {{ test_case.1 }}"
+      register: port_check
+      failed_when: false
+      async: 10
+      poll: 0
+      loop: "{{ groups['all'] | product(port_data.keys() | list) | list }}"
+      loop_control:
+        loop_var: test_case
+      when: inventory_hostname != test_case.0
+
+    - name: Wait for async port checks to complete
+      async_status:
+        jid: "{{ port_check.ansible_job_id }}"
+      register: port_results
+      until: port_results.finished
+      retries: 3
+      delay: 5
+      when: port_check.ansible_job_id is defined
+
+    - name: Debug Port Check Output
+      debug:
+        var: port_results.results
+
+    - name: Store port check results
+      set_fact:
+        port_check_results: "{{ port_check_results + [[ inventory_hostname, test_case.0, test_case.1, ('CONNECTED' if port_results.results[test_case.1] is defined and port_results.results[test_case.1].rc == 0 else 'FAILED'), port_data[test_case.1]['Service'], port_data[test_case.1]['Daemon'], port_data[test_case.1]['Comment'], 'Port_Connectivity_Test' ]] }}"
+      loop: "{{ groups['all'] | product(port_data.keys() | list) | list }}"
+      loop_control:
+        loop_var: test_case
+      when:
+        - inventory_hostname != test_case.0
+        - port_results.results is defined
+        - test_case.1 in port_results.results
+        - port_results.results[test_case.1] is defined
+
+- name: Write port check results to CSV
+  lineinfile:
+    path: /tmp/ansible_pre_req_check/ports_check.csv
+    line: "{{ item | join(',') }}"
+    create: yes
+  with_items: "{{ port_check_results | default([['NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA']]) }}"
+  delegate_to: localhost
+  run_once: false
+
