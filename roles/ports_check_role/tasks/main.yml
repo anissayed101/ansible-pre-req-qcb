@@ -7,25 +7,35 @@
   debug:
     var: port_data
 
-- name: Ensure output directory exists
+#  Remove and recreate the output directory to ensure clean execution
+- name: Remove existing output directory
+  file:
+    path: /tmp/ansible_pre_req_check
+    state: absent
+
+- name: Recreate output directory
   file:
     path: /tmp/ansible_pre_req_check
     state: directory
 
+#  Remove existing CSV file before writing results
 - name: Remove existing output file if it exists
   file:
     path: /tmp/ansible_pre_req_check/ports_check.csv
     state: absent
 
+#  Create new output file with headers
 - name: Create new output file and add headers
   copy:
     dest: /tmp/ansible_pre_req_check/ports_check.csv
     content: "source_hostname,destination_hostname,port,connection_status,service,daemon,comment,test_type\n"
 
+#  Initialize results list
 - name: Initialize port check results
   set_fact:
     port_check_results: []
 
+#  Perform port connectivity check
 - name: Perform port connectivity check
   block:
     - name: Loop through hosts and check ports
@@ -64,10 +74,12 @@
         - test_case.1 in port_results.results
         - port_results.results[test_case.1] is defined
 
+# Ensure the results list is not empty
 - name: Ensure port check results are not empty
   set_fact:
     port_check_results: "{{ port_check_results | default([['NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA']]) }}"
 
+# Write results to CSV
 - name: Write port check results to CSV
   lineinfile:
     path: /tmp/ansible_pre_req_check/ports_check.csv
@@ -77,6 +89,7 @@
   delegate_to: localhost
   run_once: false
 
+# Display the CSV file in GitHub Actions logs
 - name: Display the CSV Output in GitHub Actions
   command: cat /tmp/ansible_pre_req_check/ports_check.csv
   register: csv_output
