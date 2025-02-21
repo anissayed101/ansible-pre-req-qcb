@@ -38,9 +38,11 @@ jobs:
 #          sudo apt update -y
 #          sudo apt install -y ansible
 
+      - name: Create Ansible Vault Password File
+        run: echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > ~/.vault_pass
+        shell: bash
+
       - name: Run Selected Ansible Role
         run: |
-          ansible-playbook -i inventory/inventory.yml playbook.yml --extra-vars "selected_role=${{ github.event.inputs.selected_roles }}" --ask-vault-pass
-        env:
-          ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
-
+          ansible-playbook -i inventory/inventory.yml playbook.yml --extra-vars "selected_role=${{ github.event.inputs.selected_roles }}" --vault-password-file ~/.vault_pass
+        shell: bash
