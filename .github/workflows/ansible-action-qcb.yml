@@ -4,19 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: "Select the branch to run the workflow on"
-        required: true
-        default: "main"
-        type: choice
-        options:
-          - main
-          - develop
-          - feature-branch
-          - hotfix
       selected_roles:
         description: "Select the Ansible roles to execute"
         required: true
         type: choice
+        default: ports_check_role
         options:
           - network_connectivity_check
           - os_services_check
