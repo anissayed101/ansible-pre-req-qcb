@@ -64,12 +64,25 @@
         - test_case.1 in port_results.results
         - port_results.results[test_case.1] is defined
 
+- name: Ensure port check results are not empty
+  set_fact:
+    port_check_results: "{{ port_check_results | default([['NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA']]) }}"
+
 - name: Write port check results to CSV
   lineinfile:
     path: /tmp/ansible_pre_req_check/ports_check.csv
     line: "{{ item | join(',') }}"
     create: yes
-  with_items: "{{ port_check_results | default([['NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA']]) }}"
+  loop: "{{ port_check_results }}"
   delegate_to: localhost
   run_once: false
+
+- name: Display the CSV Output in GitHub Actions
+  command: cat /tmp/ansible_pre_req_check/ports_check.csv
+  register: csv_output
+  changed_when: false
+
+- name: Show CSV Output in GitHub Actions
+  debug:
+    msg: "{{ csv_output.stdout_lines }}"
 
