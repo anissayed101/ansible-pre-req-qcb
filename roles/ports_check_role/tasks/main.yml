@@ -7,79 +7,65 @@
   debug:
     var: port_data
 
-#  Remove and recreate the output directory to ensure clean execution
-- name: Remove existing output directory
+- name: Remove and Recreate Output Directory
   file:
     path: /tmp/ansible_pre_req_check
     state: absent
 
-- name: Recreate output directory
+- name: Create Output Directory
   file:
     path: /tmp/ansible_pre_req_check
     state: directory
 
-#  Remove existing CSV file before writing results
 - name: Remove existing output file if it exists
   file:
     path: /tmp/ansible_pre_req_check/ports_check.csv
     state: absent
 
-#  Create new output file with headers
 - name: Create new output file and add headers
   copy:
     dest: /tmp/ansible_pre_req_check/ports_check.csv
     content: "source_hostname,destination_hostname,port,connection_status,service,daemon,comment,test_type\n"
 
-#  Initialize results list
 - name: Initialize port check results
   set_fact:
     port_check_results: []
 
-#  Perform port connectivity check
 - name: Perform port connectivity check
   block:
     - name: Loop through hosts and check ports
       shell: "nc -zvw3 {{ test_case.0 }} {{ test_case.1 }}"
       register: port_check
       failed_when: false
-      async: 10
-      poll: 0
       loop: "{{ groups['all'] | product(port_data.keys() | list) | list }}"
       loop_control:
         loop_var: test_case
       when: inventory_hostname != test_case.0
 
-    - name: Wait for async port checks to complete
-      async_status:
-        jid: "{{ port_check.ansible_job_id }}"
-      register: port_results
-      until: port_results.finished
-      retries: 3
-      delay: 5
-      when: port_check.ansible_job_id is defined
-
     - name: Debug Port Check Output
       debug:
-        var: port_results.results
-
-    - name: Store port check results
-      set_fact:
-        port_check_results: "{{ port_check_results + [[ inventory_hostname, test_case.0, test_case.1, ('CONNECTED' if port_results.results[test_case.1] is defined and port_results.results[test_case.1].rc == 0 else 'FAILED'), port_data[test_case.1]['Service'], port_data[test_case.1]['Daemon'], port_data[test_case.1]['Comment'], 'Port_Connectivity_Test' ]] }}"
+        msg: "Checking connectivity from {{ test_case.0 }} to port {{ test_case.1 }}: {{ 'CONNECTED' if port_check is defined and port_check.rc is defined and port_check.rc == 0 else 'FAILED' }}"
       loop: "{{ groups['all'] | product(port_data.keys() | list) | list }}"
       loop_control:
         loop_var: test_case
-      when:
-        - inventory_hostname != test_case.0
-        - port_results.results is defined
-        - test_case.1 in port_results.results
-        - port_results.results[test_case.1] is defined
+      when: inventory_hostname != test_case.0
 
-# Ensure the results list is not empty
+    - name: Store port check results
+      set_fact:
+        port_check_results: "{{ port_check_results + [[ inventory_hostname, test_case.0, test_case.1, ('CONNECTED' if port_check is defined and port_check.rc is defined and port_check.rc == 0 else 'FAILED'), port_data[test_case.1]['Service'], port_data[test_case.1]['Daemon'], port_data[test_case.1]['Comment'], 'Port_Connectivity_Test' ]] }}"
+      loop: "{{ groups['all'] | product(port_data.keys() | list) | list }}"
+      loop_control:
+        loop_var: test_case
+      when: inventory_hostname != test_case.0
+
 - name: Ensure port check results are not empty
   set_fact:
     port_check_results: "{{ port_check_results | default([['NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA', 'NO_DATA']]) }}"
 
-# Write results to CSV
+- name: Debug Port Check Results Before Writing to CSV
+  debug:
+    msg: "{{ port_check_results }}"
+
 - name: Write port check results to CSV
   lineinfile:
     path: /tmp/ansible_pre_req_check/ports_check.csv
@@ -89,7 +75,6 @@
   delegate_to: localhost
   run_once: false
 
-# Display the CSV file in GitHub Actions logs
 - name: Display the CSV Output in GitHub Actions
   command: cat /tmp/ansible_pre_req_check/ports_check.csv
   register: csv_output
@@ -98,4 +83,3 @@
 - name: Show CSV Output in GitHub Actions
   debug:
     msg: "{{ csv_output.stdout_lines }}"
-
