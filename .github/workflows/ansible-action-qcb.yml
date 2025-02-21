@@ -33,10 +33,10 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}  # Checkout the selected branch
 
-      - name: Set up Ansible
-        run: |
-          sudo apt update -y
-          sudo apt install -y ansible
+#      - name: Set up Ansible
+#        run: |
+#          sudo apt update -y
+#          sudo apt install -y ansible
 
       - name: Run Selected Ansible Role
         run: |
