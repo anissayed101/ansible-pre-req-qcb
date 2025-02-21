@@ -38,3 +38,15 @@ jobs:
         run: |
           ansible-playbook -i inventory/inventory.yml playbook.yml --extra-vars "selected_role=${{ github.event.inputs.selected_roles }}" --vault-password-file ~/.vault_pass
         shell: bash
+
+      - name: Generate Workflow Diagram
+        run: |
+        echo '```mermaid' >> $GITHUB_STEP_SUMMARY
+        echo 'graph TD;' >> $GITHUB_STEP_SUMMARY
+        echo '    A[Set up Job] --> B[Checkout Repository]' >> $GITHUB_STEP_SUMMARY
+        echo '    B --> C[Create Ansible Vault Password File]' >> $GITHUB_STEP_SUMMARY
+        echo '    C --> D[Run Selected Ansible Role]' >> $GITHUB_STEP_SUMMARY
+        echo '    D --> E[Post Checkout Repository]' >> $GITHUB_STEP_SUMMARY
+        echo '    E --> F[Complete Job]' >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+
