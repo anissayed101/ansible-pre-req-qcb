@@ -39,3 +39,4 @@ required_packages:
   - xfsprogs
   - epel-release
   - yum-utils
+  - nc

@@ -33,8 +33,17 @@
 
 - name: Perform port connectivity check
   block:
-    - name: Loop through hosts and check ports
-      shell: "nc -zvw3 {{ test_case.0 }} {{ test_case.1 }}"
+    - name: Get FQDN for hosts
+      set_fact:
+        source_host_fqdn: "{{ hostvars[inventory_hostname]['ansible_host'] | default(inventory_hostname) }}"
+        destination_host_fqdn: "{{ hostvars[test_case.0]['ansible_host'] | default(test_case.0) }}"
+      loop: "{{ groups['all'] | product(port_data.keys() | list) | list }}"
+      loop_control:
+        loop_var: test_case
+      when: inventory_hostname != test_case.0
+
+    - name: Perform port connectivity check
+      shell: "nmap -Pn -sS -p {{ test_case.1 }} {{ destination_host_fqdn }} | grep {{ test_case.1 }} | grep -oE 'open|closed|filtered'"
       register: port_check
       failed_when: false
       loop: "{{ groups['all'] | product(port_data.keys() | list) | list }}"
@@ -44,19 +53,31 @@
 
     - name: Debug Port Check Output
       debug:
-        msg: "Checking connectivity from {{ test_case.0 }} to port {{ test_case.1 }}: {{ 'CONNECTED' if port_check is defined and port_check.rc is defined and port_check.rc == 0 else 'FAILED' }}"
+        msg: "Checking connectivity from {{ source_host_fqdn }} to {{ destination_host_fqdn }} on port {{ test_case.1 }}:
+              Raw Output: {{ port_check.results[loop_index].stdout | default('NO OUTPUT') }}"
       loop: "{{ groups['all'] | product(port_data.keys() | list) | list }}"
       loop_control:
         loop_var: test_case
+        index_var: loop_index
       when: inventory_hostname != test_case.0
 
     - name: Store port check results
       set_fact:
-        port_check_results: "{{ port_check_results + [[ inventory_hostname, test_case.0, test_case.1, ('CONNECTED' if port_check is defined and port_check.rc is defined and port_check.rc == 0 else 'FAILED'), port_data[test_case.1]['Service'], port_data[test_case.1]['Daemon'], port_data[test_case.1]['Comment'], 'Port_Connectivity_Test' ]] }}"
+        port_check_results: "{{ port_check_results + [[
+          source_host_fqdn,
+          destination_host_fqdn,
+          test_case.1,
+          ('ACCESSIBLE' if (port_check.results[loop_index].stdout is defined and port_check.results[loop_index].stdout | regex_search('open|closed')) else 'BLOCKED'),
+          port_data[test_case.1]['Service'],
+          port_data[test_case.1]['Daemon'],
+          port_data[test_case.1]['Comment'],
+          'Port_Connectivity_Test'
+        ]] }}"
       loop: "{{ groups['all'] | product(port_data.keys() | list) | list }}"
       loop_control:
         loop_var: test_case
-      when: inventory_hostname != test_case.0
+        index_var: loop_index
+      when: inventory_hostname != test_case.0 and port_check.results[loop_index].stdout is defined
 
 - name: Ensure port check results are not empty
   set_fact:
@@ -64,7 +85,7 @@
 
 - name: Debug Port Check Results Before Writing to CSV
   debug:
-    msg: "{{ port_check_results }}"
+    msg: "Final port check results: {{ port_check_results }}"
 
 - name: Write port check results to CSV
   lineinfile:
@@ -83,3 +104,4 @@
 - name: Show CSV Output in GitHub Actions
   debug:
     msg: "{{ csv_output.stdout_lines }}"
+
