@@ -1,0 +1,46 @@
+name: Ansible Pre-Req Run QCB
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Select the branch to run the workflow on"
+        required: true
+        default: "main"
+        type: choice
+        options:
+          - main
+          - develop
+          - feature-branch
+          - hotfix
+      selected_roles:
+        description: "Select the Ansible roles to execute"
+        required: true
+        type: choice
+        options:
+          - network_connectivity_check
+          - os_services_check
+          - packages_check
+          - ports_check_role
+
+jobs:
+  run-ansible-playbook:
+    runs-on: self-hosted  # This will run on your GitHub Runner Server
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}  # Checkout the selected branch
+
+      - name: Set up Ansible
+        run: |
+          sudo apt update -y
+          sudo apt install -y ansible
+
+      - name: Run Selected Ansible Role
+        run: |
+          ansible-playbook -i inventory/inventory.yml playbook.yml --extra-vars "selected_role=${{ github.event.inputs.selected_roles }}" --ask-vault-pass
+        env:
+          ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+
