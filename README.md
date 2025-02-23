@@ -2,16 +2,6 @@
 
 This repository contains an Ansible playbook that checks the following roles...
 
-## Roles and Validation
-
-The following roles will be checked and validated by this script:
-- **network_connectivity_check**
-- **os_services_check**
-- **packages_check**
-- **ports_check_role**
-
-This script is the property of **BBI** and is created and maintained by the **BBI DevOps team**.
-
 ## Prerequisites
 
 Ensure that you have the following before running the playbook:
@@ -27,6 +17,27 @@ Ensure that you have the following before running the playbook:
 - **NTP server hostname and port added to `roles/network_connectivity_check/vars/main.yml`**
 
 ## Installation and Setup
+
+### Option 1: Clone the Repository
+
+Run the following commands to clone the repository and navigate to the directory:
+
+```bash
+cd /root/
+git clone https://github.com/anissayed101/ansible-pre-req-qcb.git
+cd ansible-pre-req-qcb/
+```
+
+### Option 2: Download and Extract the Repository Manually
+
+If you are not cloning the repository using git, follow these steps:
+
+```bash
+cd /root/
+cp /path/to/your/downloaded/ansible-pre-req-qcb.zip /root/
+unzip ansible-pre-req-qcb.zip
+cd ansible-pre-req-qcb/
+```
 
 ### Install Ansible
 
@@ -182,6 +193,7 @@ ansible-vault encrypt roles/ports_check_role/vars/ports.json
 
 ## Summary
 
+- Clone the repository or extract the zip file manually
 - Install Ansible
 - Edit the inventory file
 - Edit and encrypt `network_secrets.yml`
@@ -199,7 +211,7 @@ This project is for internal use. Modify as needed.
 
 Feel free to improve this repository! Open a pull request for enhancements.
 
-Maintainer: *BBI DevOps Team*
+Maintainer: *Anis Sayed*\
 Company: *BBI*
 
 
