@@ -141,7 +141,7 @@ source ~/.bashrc
 Run the playbook using:
 
 ```bash
-ansible-playbook -i inventory/inventory.yml playbook.yml --ask-vault-pass -f 50
+ansible-playbook -i inventory/inventory.yml playbook.yml --ask-vault-pass -f 50 -vv
 ```
 
 When prompted for a password, enter:
