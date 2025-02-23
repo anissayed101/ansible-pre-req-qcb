@@ -1,6 +1,6 @@
 # Ansible Pre-Requisite Check
 
-This repository contains an Ansible playbook that checks the following roles..
+This repository contains an Ansible playbook that checks the following roles...
 
 ## Roles and Validation
 
