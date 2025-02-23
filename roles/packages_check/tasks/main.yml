@@ -8,10 +8,6 @@
       with_items: "{{ required_packages }}"
       ignore_errors: yes
 
-    - name: Ensure CSV directory exists
-      file:
-        path: /tmp/ansible_pre_req_check
-        state: directory
 
     - name: Initialize CSV file with header (only on first run)
       lineinfile:

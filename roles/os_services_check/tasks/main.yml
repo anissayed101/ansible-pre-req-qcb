@@ -2,11 +2,6 @@
     - name: Include package variables
       include_vars: "{{ role_path }}/vars/main.yml"
 
-    - name: Ensure output directory exists
-      file:
-        path: /tmp/ansible_pre_req_check
-        state: directory
-
     - name: Check SELinux status
       command: getenforce
       register: selinux_status

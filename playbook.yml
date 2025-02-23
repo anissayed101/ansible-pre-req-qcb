@@ -2,7 +2,7 @@
   hosts: all
   gather_facts: yes
   roles:
-    #- packages_check
-    #- os_services_check
-    #- network_connectivity_check
+    - packages_check
+    - os_services_check
+    - network_connectivity_check
     - ports_check_role

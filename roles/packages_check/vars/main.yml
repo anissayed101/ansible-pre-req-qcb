@@ -40,3 +40,4 @@ required_packages:
   - epel-release
   - yum-utils
   - nc
+  - nmap

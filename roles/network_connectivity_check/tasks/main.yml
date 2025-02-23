@@ -129,11 +129,6 @@
           {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} DB_Authentication {{ db_auth_status }} DB_server_{{ db_server }}
           {{ ansible_fqdn }} {{ ansible_default_ipv4.address }} NTP_Authentication {{ ntp_auth_status }} NTP_server_{{ ntp_server }}
     
-    - name: Ensure output directory exists
-      file:
-        path: /tmp/ansible_pre_req_check
-        state: directory
-        mode: '0755'
 
     - name: Remove existing output file if it exists
       file:
