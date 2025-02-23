@@ -25,10 +25,6 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}  # Checkout the selected branch
 
-#      - name: Set up Ansible
-#        run: |
-#          sudo apt update -y
-#          sudo apt install -y ansible
 
       - name: Create Ansible Vault Password File
         run: echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > ~/.vault_pass
