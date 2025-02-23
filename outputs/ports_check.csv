@@ -1,0 +1,175 @@
+source_hostname,destination_hostname,port,connection_status,service,daemon,comment,test_type
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,25,BLOCKED,Email Notification,SMTP ,SMTP ( Default - Non SSL),Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,25,ACCESSIBLE,Email Notification,SMTP ,SMTP ( Default - Non SSL),Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,111,BLOCKED,HDFS,NFS gateway,portmapper or rpcbind port.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,111,ACCESSIBLE,HDFS,NFS gateway,portmapper or rpcbind port.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,2049,BLOCKED,HDFS,NFS gateway,nfs port (nfs3.server.port) ,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,2049,ACCESSIBLE,HDFS,NFS gateway,nfs port (nfs3.server.port) ,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,2182,BLOCKED,ZooKeeper,Apache ZooKeeper Server,secureClientPort,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,2182,ACCESSIBLE,ZooKeeper,Apache ZooKeeper Server,secureClientPort,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,4242,BLOCKED,HDFS,NFS gateway,mountd port (nfs3.mountd.port),Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,4242,ACCESSIBLE,HDFS,NFS gateway,mountd port (nfs3.mountd.port),Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,6080,BLOCKED,Ranger,Ranger server Non SSL,This port is used only when Ranger is in none SSL mode.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,6080,ACCESSIBLE,Ranger,Ranger server Non SSL,This port is used only when Ranger is in none SSL mode.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,6182,BLOCKED,Ranger,Ranger Server with SSL,This port is used only when Ranger is in SSL mode.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,6182,ACCESSIBLE,Ranger,Ranger Server with SSL,This port is used only when Ranger is in SSL mode.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,7180,ACCESSIBLE,Cloudera Manager Server,HTTP (Web UI),Used for communication to peer (source) Cloudera Manager.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,7180,BLOCKED,Cloudera Manager Server,HTTP (Web UI),Used for communication to peer (source) Cloudera Manager.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,7183,BLOCKED,Cloudera Manager Server,HTTPS (Web UI),Used for communication to peer (source) Cloudera Manager when HTTPS is enabled.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,7183,ACCESSIBLE,Cloudera Manager Server,HTTPS (Web UI),Used for communication to peer (source) Cloudera Manager when HTTPS is enabled.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,7337,BLOCKED,Spark 3,Shuffle service,Port on which the Spark external shuffle service runs.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,7337,ACCESSIBLE,Spark 3,Shuffle service,Port on which the Spark external shuffle service runs.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,7788,BLOCKED,Schema Registry,Schema Registry,REST endpoint for Schema Registry.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,7788,ACCESSIBLE,Schema Registry,Schema Registry,REST endpoint for Schema Registry.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,7789,BLOCKED,Schema Registry,Schema Registry,Page for monitoring the Schema Registry service to determine for example the health state and CPU usage.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,7789,ACCESSIBLE,Schema Registry,Schema Registry,Page for monitoring the Schema Registry service to determine for example the health state and CPU usage.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,7790,BLOCKED,Schema Registry,Schema Registry,When SSL is enabled, REST endpoint for Schema Registry.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,7791,BLOCKED,Schema Registry,Schema Registry,When SSL is enabled, the page for monitoring the Schema Registry service to determine for example the health state and CPU usage.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,7790,ACCESSIBLE,Schema Registry,Schema Registry,When SSL is enabled, REST endpoint for Schema Registry.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,7791,ACCESSIBLE,Schema Registry,Schema Registry,When SSL is enabled, the page for monitoring the Schema Registry service to determine for example the health state and CPU usage.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8020,BLOCKED,HDFS,NameNode,fs.default.name is deprecated (but still works),Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8022,BLOCKED,HDFS,NameNode,Optional port used by HDFS daemons to avoid sharing the RPC port used by clients (8020). Cloudera recommends using port 8022.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8020,ACCESSIBLE,HDFS,NameNode,fs.default.name is deprecated (but still works),Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8022,ACCESSIBLE,HDFS,NameNode,Optional port used by HDFS daemons to avoid sharing the RPC port used by clients (8020). Cloudera recommends using port 8022.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8032,BLOCKED,YARN,ResourceManager,yarn.resourcemanager.address,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8032,ACCESSIBLE,YARN,ResourceManager,yarn.resourcemanager.address,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8033,BLOCKED,YARN,ResourceManager,yarn.resourcemanager.admin.address,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8033,ACCESSIBLE,YARN,ResourceManager,yarn.resourcemanager.admin.address,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8042,BLOCKED,YARN,NodeManager,yarn.nodemanager.webapp.address,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8042,ACCESSIBLE,YARN,NodeManager,yarn.nodemanager.webapp.address,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8044,BLOCKED,YARN,NodeManager,yarn.nodemanager.webapp.https.address,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8044,ACCESSIBLE,YARN,NodeManager,yarn.nodemanager.webapp.https.address,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8085,BLOCKED,HBase (Infra),REST UI,REST UI,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8085,ACCESSIBLE,HBase (Infra),REST UI,REST UI,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8088,BLOCKED,YARN,ResourceManager,yarn.resourcemanager.webapp.address,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8088,ACCESSIBLE,YARN,ResourceManager,yarn.resourcemanager.webapp.address,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8090,BLOCKED,YARN,ResourceManager,yarn.resourcemanager.webapp.https.address,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8090,ACCESSIBLE,YARN,ResourceManager,yarn.resourcemanager.webapp.https.address,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8180,BLOCKED,Ranger,Tagsync HTTP Port,HTTP port for Ranger Tagsync,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8180,ACCESSIBLE,Ranger,Tagsync HTTP Port,HTTP port for Ranger Tagsync,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8183,BLOCKED,Ranger,Tagsync HTTPS Port,HTTPS port for Ranger Tagsync,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8183,ACCESSIBLE,Ranger,Tagsync HTTPS Port,HTTPS port for Ranger Tagsync,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8280,BLOCKED,Ranger,Ranger UserSync HTTP,HTTP port for Ranger Usersync,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8280,ACCESSIBLE,Ranger,Ranger UserSync HTTP,HTTP port for Ranger Usersync,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8283,BLOCKED,Ranger,Ranger UserSync HTTPS,HTTPS port for Ranger Usersync,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8283,ACCESSIBLE,Ranger,Ranger UserSync HTTPS,HTTPS port for Ranger Usersync,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8443,BLOCKED,Knox,Knox Gateway,HTTP,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8443,ACCESSIBLE,Knox,Knox Gateway,HTTP,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8444,BLOCKED,Knox,Knox Gateway (HTTPS),HTTPS,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8444,ACCESSIBLE,Knox,Knox Gateway (HTTPS),HTTPS,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8585,BLOCKED,Streams Messaging Manager	,Streams Messaging Manager Rest Admin Server,Streams Messaging Manager Port,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8585,ACCESSIBLE,Streams Messaging Manager	,Streams Messaging Manager Rest Admin Server,Streams Messaging Manager Port,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8586,BLOCKED,Streams Messaging Manager	,Streams Messaging Manager Rest Admin Server,Streams Messaging Manager Admin Port,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8586,ACCESSIBLE,Streams Messaging Manager	,Streams Messaging Manager Rest Admin Server,Streams Messaging Manager Admin Port,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8587,BLOCKED,Streams Messaging Manager	,Streams Messaging Manager Rest Admin Server,Streams Messaging Manager Port (SSL),Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8587,ACCESSIBLE,Streams Messaging Manager	,Streams Messaging Manager Rest Admin Server,Streams Messaging Manager Port (SSL),Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8588,BLOCKED,Streams Messaging Manager	,Streams Messaging Manager Rest Admin Server,Streams Messaging Manager Admin Port (SSL),Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8588,ACCESSIBLE,Streams Messaging Manager	,Streams Messaging Manager Rest Admin Server,Streams Messaging Manager Admin Port (SSL),Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8765,BLOCKED,Phoenix,Phoenix Query Server,Phoenix Query Server Port,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8888,BLOCKED,Hue,Server,Server,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8765,ACCESSIBLE,Phoenix,Phoenix Query Server,Phoenix Query Server Port,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8889,BLOCKED,Hue,Load Balancer,Server,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8888,ACCESSIBLE,Hue,Server,Server,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8983,BLOCKED,Solr (Infra),Solr Server,HTTP port for all Solr-specific actions, update/query.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8889,ACCESSIBLE,Hue,Load Balancer,Server,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8985,BLOCKED,Solr (Infra),Solr Server,HTTPS port for all Solr-specific actions, update/query.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8983,ACCESSIBLE,Solr (Infra),Solr Server,HTTP port for all Solr-specific actions, update/query.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,8998,BLOCKED,Livy for Spark 3,Livy Server Web UI,Livy Server Web UI,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8985,ACCESSIBLE,Solr (Infra),Solr Server,HTTPS port for all Solr-specific actions, update/query.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9000,BLOCKED,Cloudera Manager agent,Cloudera Manager Agent,Cloudera Manager Agent,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,8998,ACCESSIBLE,Livy for Spark 3,Livy Server Web UI,Livy Server Web UI,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9083,BLOCKED,Hive,Metastore,Metastore,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9000,ACCESSIBLE,Cloudera Manager agent,Cloudera Manager Agent,Cloudera Manager Agent,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9090,BLOCKED,HBase (Infra),HBase Thrift Server,HBase Thrift Server,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9083,ACCESSIBLE,Hive,Metastore,Metastore,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9092,BLOCKED,Kafka,Kafka broker,The primary communication port used by producers and consumers; also used for inter-broker communication.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9090,ACCESSIBLE,HBase (Infra),HBase Thrift Server,HBase Thrift Server,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9093,BLOCKED,Kafka,Kafka broker,A secured communication port used by producers and consumers; also used for inter-broker communication.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9092,ACCESSIBLE,Kafka,Kafka broker,The primary communication port used by producers and consumers; also used for inter-broker communication.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9095,BLOCKED,HBase (Infra),HBase Thrift Serve Web UIr,HBase Thrift Serve Web UIr,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9093,ACCESSIBLE,Kafka,Kafka broker,A secured communication port used by producers and consumers; also used for inter-broker communication.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9292,BLOCKED,Ranger KMS,Ranger KMS nodes,HTTP port for Ranger KMS.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9095,ACCESSIBLE,HBase (Infra),HBase Thrift Serve Web UIr,HBase Thrift Serve Web UIr,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9292,ACCESSIBLE,Ranger KMS,Ranger KMS nodes,HTTP port for Ranger KMS.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9494,BLOCKED,Ranger KMS,Ranger KMS nodes,HTTPS port for Ranger KMS. Only used when SSL is enabled for Ranger KMS.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9494,ACCESSIBLE,Ranger KMS,Ranger KMS nodes,HTTPS port for Ranger KMS. Only used when SSL is enabled for Ranger KMS.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9864,BLOCKED,HDFS,DataNode,DataNode HTTP server port.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9864,ACCESSIBLE,HDFS,DataNode,DataNode HTTP server port.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9865,BLOCKED,HDFS,DataNode,DataNode HTTPS server port.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9866,BLOCKED,HDFS,DataNode,DataNode server address and port for data transfer.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9865,ACCESSIBLE,HDFS,DataNode,DataNode HTTPS server port.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9866,ACCESSIBLE,HDFS,DataNode,DataNode server address and port for data transfer.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9867,BLOCKED,HDFS,DataNode,DataNode IPC server port.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9867,ACCESSIBLE,HDFS,DataNode,DataNode IPC server port.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9870,BLOCKED,HDFS,NameNode,dfs.http.address is deprecated (but still works),Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9870,ACCESSIBLE,HDFS,NameNode,dfs.http.address is deprecated (but still works),Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9871,BLOCKED,HDFS,NameNode,dfs.https.address is deprecated (but still works),Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9871,ACCESSIBLE,HDFS,NameNode,dfs.https.address is deprecated (but still works),Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,9991,BLOCKED,Streams Messaging Manager	,Streams Messaging Manager UI Server,The port on which server accepts connections. This port is used for both secured and unsecured connections.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,10000,BLOCKED,Hive,HiveServer2,HiveServer2,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,9991,ACCESSIBLE,Streams Messaging Manager	,Streams Messaging Manager UI Server,The port on which server accepts connections. This port is used for both secured and unsecured connections.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,10000,ACCESSIBLE,Hive,HiveServer2,HiveServer2,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,10002,BLOCKED,Hive,HiveServer2 Web User Interface (UI),HiveServer2 Web User Interface (UI),Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,10090,BLOCKED,Livy for Spark 3,Livy Thrift Server,Livy Thrift Server,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,10002,ACCESSIBLE,Hive,HiveServer2 Web User Interface (UI),HiveServer2 Web User Interface (UI),Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,10090,ACCESSIBLE,Livy for Spark 3,Livy Thrift Server,Livy Thrift Server,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,10110,BLOCKED,Cloudera Management Service,Telemetry Publisher,The port where the Telemetry Publisher Server listens for requests,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,10110,ACCESSIBLE,Cloudera Management Service,Telemetry Publisher,The port where the Telemetry Publisher Server listens for requests,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,10111,BLOCKED,Cloudera Management Service,Telemetry Publisher,The port where Telemetry Publisher starts a debug web server. Set to -1 to disable debug server.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,10111,ACCESSIBLE,Cloudera Management Service,Telemetry Publisher,The port where Telemetry Publisher starts a debug web server. Set to -1 to disable debug server.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,11000,BLOCKED,Oozie,Oozie Server,HTTP,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,11000,ACCESSIBLE,Oozie,Oozie Server,HTTP,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,11060,BLOCKED,HBase (Infra),Lily HBase Indexer,Lily HBase Indexer,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,11060,ACCESSIBLE,HBase (Infra),Lily HBase Indexer,Lily HBase Indexer,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,11443,BLOCKED,Oozie,Oozie Server,HTTPS,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,11443,ACCESSIBLE,Oozie,Oozie Server,HTTPS,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,14000,BLOCKED,HDFS,HttpFS,HttpFS server port,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,14000,ACCESSIBLE,HDFS,HttpFS,HttpFS server port,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,14001,BLOCKED,HDFS,HttpFS,HttpFS admin port,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,14001,ACCESSIBLE,HDFS,HttpFS,HttpFS admin port,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,16000,BLOCKED,HBase (Infra),Master,IPC,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,16000,ACCESSIBLE,HBase (Infra),Master,IPC,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,16010,BLOCKED,HBase (Infra),Master,HTTP,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,16010,ACCESSIBLE,HBase (Infra),Master,HTTP,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,16020,BLOCKED,HBase (Infra),RegionServer,IPC,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,16020,ACCESSIBLE,HBase (Infra),RegionServer,IPC,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,16030,BLOCKED,HBase (Infra),RegionServer,HTTP,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,16030,ACCESSIBLE,HBase (Infra),RegionServer,HTTP,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,18088,BLOCKED,Spark 3,History Server,HTTP port for the Spark History Server WebUI.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,18088,ACCESSIBLE,Spark 3,History Server,HTTP port for the Spark History Server WebUI.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,18488,BLOCKED,Spark 3,History Server with TLS,HTTPS port for Spark History Server WebUI. Only used when SSL is enabled for Spark History Server.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,18488,ACCESSIBLE,Spark 3,History Server with TLS,HTTPS port for Spark History Server WebUI. Only used when SSL is enabled for Spark History Server.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,19888,BLOCKED,YARN,JobHistory Server	,mapreduce.jobhistory.webapp.address,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,19888,ACCESSIBLE,YARN,JobHistory Server	,mapreduce.jobhistory.webapp.address,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,19890,BLOCKED,YARN,JobHistory Server	,mapreduce.jobhistory.webapp.https.address,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,19890,ACCESSIBLE,YARN,JobHistory Server	,mapreduce.jobhistory.webapp.https.address,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,20550,BLOCKED,HBase (Infra),REST,The default REST port in HBase is 8080. Because this is a commonly used port, Cloudera Manager sets the default to 20550 instead.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,20550,ACCESSIBLE,HBase (Infra),REST,The default REST port in HBase is 8080. Because this is a commonly used port, Cloudera Manager sets the default to 20550 instead.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,21000,BLOCKED,Impala,Impala Daemon,Used to transmit commands and receive results by impala-shell and version 1.2 of the Cloudera ODBC driver.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,21050,BLOCKED,Impala,Impala Daemon,Used to transmit commands and receive results by applications, such as Business Intelligence tools, using JDBC, the Beeswax query editor in Hue, and version 2.0 or higher of the Cloudera ODBC driver.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,21000,ACCESSIBLE,Impala,Impala Daemon,Used to transmit commands and receive results by impala-shell and version 1.2 of the Cloudera ODBC driver.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,25000,BLOCKED,Impala,Impala Daemon,Impala web interface for administrators to monitor and troubleshoot.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,21050,ACCESSIBLE,Impala,Impala Daemon,Used to transmit commands and receive results by applications, such as Business Intelligence tools, using JDBC, the Beeswax query editor in Hue, and version 2.0 or higher of the Cloudera ODBC driver.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,25010,BLOCKED,Impala,StateStore Daemon,StateStore web interface for administrators to monitor and troubleshoot.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,25000,ACCESSIBLE,Impala,Impala Daemon,Impala web interface for administrators to monitor and troubleshoot.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,25020,BLOCKED,Impala,Catalog Daemon,Catalog service web interface for administrators to monitor and troubleshoot.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,25010,ACCESSIBLE,Impala,StateStore Daemon,StateStore web interface for administrators to monitor and troubleshoot.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,28000,BLOCKED,Impala,Impala Daemon,Used to transmit commands and receive results by client applications over HTTP through the HiveServer2 protocol.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,25020,ACCESSIBLE,Impala,Catalog Daemon,Catalog service web interface for administrators to monitor and troubleshoot.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,28083,BLOCKED,Kafka,Kafka connect,Kafka Connect Rest Port.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,28000,ACCESSIBLE,Impala,Impala Daemon,Used to transmit commands and receive results by client applications over HTTP through the HiveServer2 protocol.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,28084,BLOCKED,Kafka,Kafka connect,Jetty Metrics Port,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,28083,ACCESSIBLE,Kafka,Kafka connect,Kafka Connect Rest Port.,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,28085,BLOCKED,Kafka,Kafka connect,Kafka Connect Secure Rest Port,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,28084,ACCESSIBLE,Kafka,Kafka connect,Jetty Metrics Port,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,28087,BLOCKED,Kafka,Kafka connect,Secure Jetty Metrics Port,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,31000,BLOCKED,Atlas,Atlas Server,HTTP port,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,28085,ACCESSIBLE,Kafka,Kafka connect,Kafka Connect Secure Rest Port,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,31443,BLOCKED,Atlas,Atlas Server,HTTPS port,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,28087,ACCESSIBLE,Kafka,Kafka connect,Secure Jetty Metrics Port,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,50079,BLOCKED,HDFS,NFS gateway,The NFS gateway daemon uses this port to serve metrics. The port is configurable on versions 5.10 and higher.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,31000,ACCESSIBLE,Atlas,Atlas Server,HTTP port,Port_Connectivity_Test
+ip-172-31-31-151.eu-north-1.compute.internal,ip-172-31-25-226.eu-north-1.compute.internal,50579,BLOCKED,HDFS,NFS gateway,The NFS gateway daemon uses this port to serve metrics. The port is configurable on versions 5.10 and higher.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,31443,ACCESSIBLE,Atlas,Atlas Server,HTTPS port,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,50079,ACCESSIBLE,HDFS,NFS gateway,The NFS gateway daemon uses this port to serve metrics. The port is configurable on versions 5.10 and higher.,Port_Connectivity_Test
+ip-172-31-25-226.eu-north-1.compute.internal,ip-172-31-31-151.eu-north-1.compute.internal,50579,ACCESSIBLE,HDFS,NFS gateway,The NFS gateway daemon uses this port to serve metrics. The port is configurable on versions 5.10 and higher.,Port_Connectivity_Test
