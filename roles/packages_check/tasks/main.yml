@@ -10,7 +10,7 @@
 
     - name: Remove existing output file if it exists
       file:
-        path: /tmp/ansible_pre_req_check/os_services_check.csv
+        path: /tmp/ansible_pre_req_check/packages_check.csv
         state: absent
 
     - name: Initialize CSV file with header (only on first run)
